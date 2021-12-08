@@ -48,14 +48,18 @@ class SegmentSearch: Solution {
             digits[7] = Set(patterns.first(where: { $0.count == 3 }) ?? "")
             digits[8] = Set("abcdefg")
 
+            // a is the character that's 7 - 1
             let aCharacter: Set<Character> = {
                 let charSet = digits[7].subtracting(digits[1])
                 if charSet.count != 1 { return Set() }
                 return charSet
             }()
             print("a ->", aCharacter)
+
             let fivePatterns = patterns.filter { $0.count == 5 }
             let sixPatterns = patterns.filter { $0.count == 6 }
+
+            // c is the only character not in 6 between 0, 6, and 9
             let cCharacter: Set<Character> = {
                 for pattern in sixPatterns {
                     let charSet = digits[1].subtracting(Set(pattern))
@@ -65,6 +69,8 @@ class SegmentSearch: Solution {
                 return Set()
             }()
             print("c ->", cCharacter)
+
+            // Step 2a: Determine 0, 6, 9 (6 segments)
             digits[6] = digits[8].subtracting(cCharacter)
 
             let eCharacter: Set<Character> = {
@@ -77,7 +83,7 @@ class SegmentSearch: Solution {
             }()
             print("e ->", eCharacter)
 
-            // Step 2a: Determine 0, 6, 9 (6 segments)
+
             digits[9] = digits[8].subtracting(eCharacter)
             digits[0] = {
                 let remaining = sixPatterns.filter { s in
@@ -87,6 +93,7 @@ class SegmentSearch: Solution {
                 return Set(Set(remaining).first!)
             }()
 
+            // Now determine d and b out of what we just learned from 0
             let dCharacter = digits[8].subtracting(digits[0])
             print("d -> ", dCharacter)
             let bCharacter = digits[4].subtracting(digits[1]).subtracting(dCharacter)

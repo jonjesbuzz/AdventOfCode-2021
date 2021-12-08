@@ -18,6 +18,15 @@ let package = Package(
             dependencies: [
                 .product(name: "Algorithms", package: "swift-algorithms")
             ]),
+        .executableTarget(name: "Dive", dependencies: [
+            .target(name: "AdventCore")
+        ]),
+        .executableTarget(name: "BinaryDiagnostic", dependencies: [
+            .target(name: "AdventCore")
+        ]),
+        .executableTarget(name: "GiantSquid", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .executableTarget(name: "CrabSubmarine", dependencies: [
             .target(name: "AdventCore")
         ]),
