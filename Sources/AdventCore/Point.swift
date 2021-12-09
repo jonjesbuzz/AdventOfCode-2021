@@ -7,6 +7,19 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         self.y = y
     }
 
+    public init(row: Int, column: Int) {
+        self.y = row
+        self.x = column
+    }
+
+    public var row: Int {
+        return self.y
+    }
+
+    public var column: Int {
+        return self.x
+    }
+
     public init(stringValue: String) {
         let vals = stringValue.intArray(separatedBy: ",")
         self.x = vals[0]
