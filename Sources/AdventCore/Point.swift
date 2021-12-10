@@ -1,3 +1,4 @@
+/// Represents a point in space, or on a `Grid`.
 public struct Point: Equatable, CustomStringConvertible, Hashable {
     public var x: Int
     public var y: Int
@@ -7,6 +8,7 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         self.y = y
     }
 
+    /// Row and column map to y and x, respectively.
     public init(row: Int, column: Int) {
         self.y = row
         self.x = column
@@ -20,6 +22,7 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         return self.x
     }
 
+    /// Instantiates a point based on a value given as `"x,y"`.
     public init(stringValue: String) {
         let vals = stringValue.intArray(separatedBy: ",")
         self.x = vals[0]

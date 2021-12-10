@@ -1,6 +1,20 @@
+/// A Grid is a wrapper around a 2D matrix, with convenience methods to make computations easier.
+///
+/// You can index the grid using either integers or Point instances as follows:
+/// ```
+/// let grid = Grid(rows: 10, columns: 10, initialValue: 0)
+/// let point = Point(row: 6, column: 4)
+/// grid[3,1] = 3 // That is, grid[row, column]
+/// grid[point] = 24
+/// ```
 open class Grid<T>: CustomStringConvertible {
     public var grid: [[T]]
 
+    /// Creates a Grid of `rows` × `columns` filled with the `initialValue` in all positions.
+    /// - Parameters:
+    ///   - rows: The number of rows in the grid.
+    ///   - columns: The number of columns in the grid.
+    ///   - initialValue: The initial value to fill in all of the positions.
     public init(rows: Int, columns: Int, initialValue: T) {
         guard rows > 0 else { self.grid = []; return }
         self.grid = Array(repeating: Array(repeating: initialValue, count: columns), count: rows)
@@ -10,18 +24,24 @@ open class Grid<T>: CustomStringConvertible {
         self.grid = matrix
     }
 
+    /// The number of rows in the Grid.
     public var rows: Int {
         return self.grid.count
     }
 
+    /// The number of columns in the Grid.
     public var columns: Int {
         return self.grid.count > 0 ? self.grid[0].count : 0
     }
 
+    /// The number of values in the Grid.
+    ///
+    /// This is the product of `rows` and `columns`.
     public var count: Int {
         return rows * columns
     }
 
+    /// Sets or returns the value at the specified Point.
     public subscript(_ point: Point) -> T {
         get {
             return self.grid[point.y][point.x]
@@ -31,6 +51,7 @@ open class Grid<T>: CustomStringConvertible {
         }
     }
 
+    /// Sets or returns the value at the specified row and column.
     public subscript(row: Int, col: Int) -> T {
         get {
             return self.grid[row][col]
@@ -40,6 +61,9 @@ open class Grid<T>: CustomStringConvertible {
         }
     }
 
+    /// Returns the entire grid as a one-dimensional array.
+    ///
+    /// This is useful for performing functional operations such as `map`, `filter`, and `reduce`.
     public var flattened: [T] {
         return self.grid.flatMap { $0 }
     }

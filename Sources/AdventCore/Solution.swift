@@ -1,21 +1,39 @@
 import Foundation
 
+/// Solution is a protocol which provides basic functionality for validating the test input and providing the answer to the actual puzzle input.
 public protocol Solution : AnyObject {
+
+    /// The type of the provided input.
     associatedtype InputType
+    /// The type of the answer.
     associatedtype AnswerType: Equatable
 
+    /// The Input instance with the test and actual input
     var inputs: Input<InputType> { get }
+
+    /// The actual input being operated on.
+    ///
+    /// When this value is set, `reset()` will be called to rebuild any data structures held by the Solution instance.
     var activeInput: InputType { get set }
+
+    /// The answers to part 1 and part 2's test input.
     var testAnswer: Answer<AnswerType> { get }
 
+    /// This function should reset any data structures held by the instance.
+    /// This method MUST be called if `activeInput` is changed during execution.
     func reset()
 
+    /// The implementation of part 1
     func part1() -> AnswerType
+
+    /// The implementation of part 2.
     func part2() -> AnswerType
 }
 
 public extension Solution {
 
+    /// Executes part 1 and part 2 with the test input defined in the problem.
+    /// If the answer does not match what is given in `testAnswer`, an assertion is thrown to stop the program.
     func runWithTestInput() {
         self.activeInput = inputs.test
 
@@ -32,6 +50,9 @@ public extension Solution {
         assert(ans2 == testAnswer.part2, "Part 2 does not match, expected \(testAnswer.part2), but got \(ans2)")
     }
 
+
+    /// Executes part 1 and part 2 with the actual puzzle input,
+    /// and will print out the answer to part 1 and part 2.
     func runWithActualInput() {
         self.activeInput = inputs.actual
 
