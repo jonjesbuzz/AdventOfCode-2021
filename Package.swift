@@ -42,6 +42,9 @@ let package = Package(
         .executableTarget(name: "SmokeBasin", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "SyntaxScoring", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),

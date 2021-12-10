@@ -1,3 +1,5 @@
+// Day 9: Smoke Basin
+
 import Foundation
 import AdventCore
 
