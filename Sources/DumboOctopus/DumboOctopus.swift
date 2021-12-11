@@ -16,14 +16,14 @@ class DumboOctopus: Solution {
         self.grid = Grid(matrix: activeInput.stringArray().map { $0.singleDigitIntArray() })
     }
 
-    func tick(grid: Grid<Int>) -> Grid<Bool> {
+    func tick(grid: inout Grid<Int>) -> Grid<Bool> {
         for r in 0..<grid.rows {
             for c in 0..<grid.columns {
                 grid[r, c] += 1
             }
         }
 
-        let didFlash = Grid(rows: grid.rows, columns: grid.columns, initialValue: false)
+        var didFlash = Grid(rows: grid.rows, columns: grid.columns, initialValue: false)
         while grid.flattened.contains(where: { $0 >= 10 }) {
             // Flash all the ones that reached 10 or more
             for r in 0..<grid.rows {
@@ -59,7 +59,7 @@ class DumboOctopus: Solution {
         var flashCount = 0
 
         for _ in 0..<ticks {
-            let didFlash = self.tick(grid: self.grid)
+            let didFlash = self.tick(grid: &self.grid)
             let stepCount = didFlash.flattened.reduce(into: 0) { partialResult, flashed in
                 partialResult += flashed ? 1 : 0
             }
@@ -77,7 +77,7 @@ class DumboOctopus: Solution {
         // We can just wait for the grid to only contain 0s
         while !grid.flattened.filter({ $0 != 0 }).isEmpty {
             ticks += 1
-            let _ = tick(grid: self.grid)
+            let _ = tick(grid: &self.grid)
         }
 
         return ticks

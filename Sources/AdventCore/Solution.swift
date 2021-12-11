@@ -8,12 +8,12 @@ public protocol Solution : AnyObject {
     /// The type of the answer.
     associatedtype AnswerType: Equatable
 
-    /// The Input instance with the test and actual input
+    /// The Input instance with the test and actual input.
     var inputs: Input<InputType> { get }
 
     /// The actual input being operated on.
     ///
-    /// When this value is set, `reset()` will be called to rebuild any data structures held by the Solution instance.
+    /// When this value is set, `reset()` MUST be called to rebuild any data structures held by the Solution instance.
     var activeInput: InputType { get set }
 
     /// The answers to part 1 and part 2's test input.
@@ -24,7 +24,7 @@ public protocol Solution : AnyObject {
     /// This method MUST be called if `activeInput` is changed during execution.
     func reset()
 
-    /// The implementation of part 1
+    /// The implementation of part 1.
     func part1() -> AnswerType
 
     /// The implementation of part 2.

@@ -5,8 +5,10 @@ import Foundation
 /// This instance is immutable and read-only after it is constructed.
 public struct Line: Equatable, CustomStringConvertible {
 
-    ///
+    /// The start point of this line.
     public let start: Point
+
+    /// The end point of this line.
     public let end: Point
 
     /// Initializes a line from a start point and an end point.
@@ -23,7 +25,7 @@ public struct Line: Equatable, CustomStringConvertible {
 
     /// Initializes a line from a string representation.
     ///
-    /// The expected string representation is `x1,y1 -> x2,y2`
+    /// The expected string representation is `x1,y1 -> x2,y2`. For example, `1,1 -> 3,5`.
     public init(stringValue: String) {
         let points = stringValue.components(separatedBy: " -> ")
         self.start = Point(stringValue: points[0])

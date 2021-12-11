@@ -18,6 +18,10 @@ public extension String {
         return self.split(separator: separator).map { Int($0)! }
     }
 
+    /// Returns an array of integers where each character in the string is converted to a whole number.
+    ///
+    /// For example, `12345` becomes `[1, 2, 3, 4, 5]`.
+    /// If any character in the string is a non-numeric value, the function crashes with an unwrapping error.
     func singleDigitIntArray() -> [Int] {
         return Array(self).map { $0.wholeNumberValue! }
     }

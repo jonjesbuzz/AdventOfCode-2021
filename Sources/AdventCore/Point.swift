@@ -22,21 +22,21 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         self.x = column
     }
 
-    /// Returns the row represenation of this point.
+    /// The row represenation of this point.
     ///
     /// Row is represented by the `y` value of the point.
     public var row: Int {
         return self.y
     }
 
-    /// Returns the column represenation of this point.
+    /// The column represenation of this point.
     ///
     /// Column is represented by the `x` value of the point.
     public var column: Int {
         return self.x
     }
 
-    /// Instantiates a point based on a value given as `"x,y"`.
+    /// Instantiates a point based on a string value given as `x,y`. For example, `3,4`.
     public init(stringValue: String) {
         let vals = stringValue.intArray(separatedBy: ",")
         self.x = vals[0]

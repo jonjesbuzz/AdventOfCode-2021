@@ -38,7 +38,7 @@ class SmokeBasin: Solution {
         let colBound = self.basin.columns
 
         // Perform a DFS on the grid to group the basins together
-        let members = Grid(rows: rowBound, columns: colBound, initialValue: -1)
+        var members = Grid(rows: rowBound, columns: colBound, initialValue: -1)
 
         var currentBasin = 0 // Gives each basin an identifier
         var visited = Set<Point>()

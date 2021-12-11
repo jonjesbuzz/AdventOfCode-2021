@@ -1,4 +1,4 @@
-/// A Grid is a wrapper around a 2D matrix, with convenience methods to make computations easier.
+/// A Grid is a wrapper around a two-dimensional matrix, with convenience methods to make computations easier.
 ///
 /// You can index the grid using either integers or Point instances as follows:
 /// ```
@@ -7,8 +7,10 @@
 /// grid[3,1] = 3 // That is, grid[row, column]
 /// grid[point] = 24
 /// ```
-open class Grid<T>: CustomStringConvertible {
-    public var grid: [[T]]
+public struct Grid<T>: CustomStringConvertible {
+
+    /// The underlying two-dimensional array of the grid.
+    private(set) public var grid: [[T]]
 
     /// Creates a Grid of `rows` × `columns` filled with the `initialValue` in all positions.
     /// - Parameters:
@@ -20,6 +22,8 @@ open class Grid<T>: CustomStringConvertible {
         self.grid = Array(repeating: Array(repeating: initialValue, count: columns), count: rows)
     }
 
+    /// Initialize the grid with a prepopulated matrix.
+    /// - Parameter matrix: The prepopulated matrix of values for this grid.
     public init(matrix: [[T]]) {
         self.grid = matrix
     }
@@ -63,7 +67,8 @@ open class Grid<T>: CustomStringConvertible {
 
     /// Returns the entire grid as a one-dimensional array.
     ///
-    /// This is useful for performing functional operations such as `map`, `filter`, and `reduce`.
+    /// This is useful for performing iteration over all values in the grid, and for
+    /// functional operations such as `map`, `filter`, and `reduce`.
     public var flattened: [T] {
         return self.grid.flatMap { $0 }
     }
