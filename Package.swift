@@ -45,6 +45,9 @@ let package = Package(
         .executableTarget(name: "SyntaxScoring", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "DumboOctopus", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),
