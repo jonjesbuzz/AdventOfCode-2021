@@ -29,20 +29,15 @@ class DumboOctopus: Solution {
             for r in 0..<grid.rows {
                 for c in 0..<grid.columns {
                     // If this octopus already flashed, we ignore it.
-                    if grid[r, c] >= 10 && !didFlash[r, c] {
-                        didFlash[r, c] = true
+                    let point = Point(row: r, column: c)
+                    if grid[point] >= 10 && !didFlash[point] {
+                        didFlash[point] = true
 
-                        // Up, Down, Left, Right
-                        if r > 0 { grid[r - 1, c] += 1 }
-                        if r < grid.rows - 1 { grid[r + 1, c] += 1 }
-                        if c > 0 { grid[r, c - 1] += 1 }
-                        if c < grid.columns - 1 { grid[r, c + 1] += 1 }
-
-                        // Diagonals
-                        if r > 0 && c > 0 { grid[r - 1, c - 1] += 1 }
-                        if r < grid.rows - 1 && c > 0 { grid[r + 1, c - 1] += 1 }
-                        if r > 0 && c < grid.columns - 1 { grid[r - 1, c + 1] += 1 }
-                        if r < grid.rows - 1 && c < grid.columns - 1 { grid[r + 1, c + 1] += 1 }
+                        for direction in Point.Direction.allCases {
+                            if let adjacent = point.adjacentPoint(at: direction, in: self.grid) {
+                                grid[adjacent] += 1
+                            }
+                        }
                     }
                 }
             }

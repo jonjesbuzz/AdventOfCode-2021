@@ -1,5 +1,9 @@
 import Foundation
 
+/// The Answer struct holds the expected answers for a given input.
+///
+/// This answer is usually given for the test inputs, and the `Solution` protocol uses it to
+/// determine if the solutions to part 1 and part 2 generate the expected outputs.
 public struct Answer<T: Equatable>: Equatable {
 
     private(set) public var part1: T

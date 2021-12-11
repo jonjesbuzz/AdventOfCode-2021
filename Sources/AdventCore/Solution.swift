@@ -20,6 +20,7 @@ public protocol Solution : AnyObject {
     var testAnswer: Answer<AnswerType> { get }
 
     /// This function should reset any data structures held by the instance.
+    /// 
     /// This method MUST be called if `activeInput` is changed during execution.
     func reset()
 
@@ -33,6 +34,7 @@ public protocol Solution : AnyObject {
 public extension Solution {
 
     /// Executes part 1 and part 2 with the test input defined in the problem.
+    ///
     /// If the answer does not match what is given in `testAnswer`, an assertion is thrown to stop the program.
     func runWithTestInput() {
         self.activeInput = inputs.test
