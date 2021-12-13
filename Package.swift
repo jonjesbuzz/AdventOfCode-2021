@@ -48,6 +48,12 @@ let package = Package(
         .executableTarget(name: "DumboOctopus", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "PassagePathing", dependencies: [
+            .target(name: "AdventCore")
+        ]),
+        .executableTarget(name: "TransparentOrigami", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),
