@@ -25,4 +25,13 @@ public extension String {
     func singleDigitIntArray() -> [Int] {
         return Array(self).map { $0.wholeNumberValue! }
     }
+
+    /// Returns the frequency of each character in this string.
+    var characterFrequencyTable: [Character: Int] {
+        var frequencyTable: [Character: Int] = [:]
+        for char in Array(self) {
+            frequencyTable[char, default: 0] += 1
+        }
+        return frequencyTable
+    }
 }
