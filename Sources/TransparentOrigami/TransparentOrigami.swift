@@ -40,6 +40,9 @@ class TransparentOrigami: Solution {
             grid[point] = true
         }
         print(grid.origamiRepresentation)
+
+        // Note: Part 2 was to read the printed output as a string
+        // There is no numeric answer for this.
         return 0
     }
 

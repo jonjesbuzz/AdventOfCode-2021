@@ -1,6 +1,6 @@
 import Foundation
 
-/// Solution is a protocol which provides basic functionality for validating the test input and providing the answer to the actual puzzle input.
+/// Solution provides basic functionality for validating the test input and providing the answer to the actual puzzle input.
 public protocol Solution : AnyObject {
 
     /// The type of the provided input.

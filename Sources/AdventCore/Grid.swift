@@ -1,7 +1,7 @@
 /// A Grid is a wrapper around a two-dimensional matrix, with convenience methods to make computations easier.
 ///
 /// You can index the grid using either integers or Point instances as follows:
-/// ```
+/// ```swift
 /// let grid = Grid(rows: 10, columns: 10, initialValue: 0)
 /// let point = Point(row: 6, column: 4)
 /// grid[3,1] = 3 // That is, grid[row, column]
@@ -65,6 +65,16 @@ public struct Grid<T>: CustomStringConvertible {
         }
     }
 
+    /// The point representing the top-left corner of the grid.
+    public var startPoint: Point {
+        return Point(row: 0, column: 0)
+    }
+
+    /// The point representing the bottom-right corner of the grid.
+    public var endPoint: Point {
+        return Point(row: self.rows - 1, column: self.columns - 1)
+    }
+
     /// Returns the entire grid as a one-dimensional array.
     ///
     /// This is useful for performing iteration over all values in the grid, and for
@@ -75,5 +85,44 @@ public struct Grid<T>: CustomStringConvertible {
 
     public var description: String {
         return grid.map({String(describing: $0)}).joined(separator: ",\n")
+    }
+}
+
+// MARK: - Numeric-specific Extensions
+
+public extension Grid where T: AdventCore.Numeric {
+
+    /// Returns the minimum path cost from a start point to a destination.
+    ///
+    /// The values in the grid are considered the cost of traversing across it.
+    ///
+    /// The implementation of this function uses Dijkstra's algorithm with a heap behaving as a priority queue.
+    /// - Parameters:
+    ///   - start: The starting point of the search. This node will have a cost of 0.
+    ///   - destination: The destination of this search.
+    /// - Returns: The minimum cost to reach `destination` from `start`.
+    func minCost(from start: Point, to destination: Point) -> T {
+        var costGrid = Grid(rows: self.rows, columns: self.columns, initialValue: T.max)
+        costGrid[start] = .zero
+        var pq = Heap<(Point, T)>(comparator: { $0.1 < $1.1 })
+        pq.insert((start, .zero))
+
+        while !pq.isEmpty {
+            let tuple = pq.remove()
+            let current = tuple.0
+            let currentCost = costGrid[current]
+            for direction in Point.Direction.nonDiagonal {
+                guard let point = current.adjacentPoint(at: direction, in: self) else { continue }
+                let pointCost = costGrid[point]
+                if pointCost > currentCost + self[point] {
+                    costGrid[point] = currentCost + self[point]
+                    pq.insert((point, costGrid[point]))
+                }
+
+                // We can afford to be greedy.
+                if point == destination { break }
+            }
+        }
+        return costGrid[destination]
     }
 }

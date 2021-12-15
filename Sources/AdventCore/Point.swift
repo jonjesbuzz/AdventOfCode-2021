@@ -3,6 +3,7 @@
 /// This instance is immutable and read-only once it has been constructed.
 public struct Point: Equatable, CustomStringConvertible, Hashable {
 
+    // MARK: - x,y Representation
     /// The x-coordinate of this point.
     public let x: Int
 
@@ -15,12 +16,14 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         self.y = y
     }
 
-    /// Initialize a point using (row, column) as the coordinate pair.
-    /// This is most useful in conjunction with the `Grid` class.
-    public init(row: Int, column: Int) {
-        self.y = row
-        self.x = column
+    /// Instantiates a point based on a string value given as `x,y`. For example, `3,4`.
+    public init(stringValue: String) {
+        let vals = stringValue.intArray(separatedBy: ",")
+        self.x = vals[0]
+        self.y = vals[1]
     }
+
+    // MARK: - Row-Column Representation
 
     /// The row represenation of this point.
     ///
@@ -36,12 +39,14 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         return self.x
     }
 
-    /// Instantiates a point based on a string value given as `x,y`. For example, `3,4`.
-    public init(stringValue: String) {
-        let vals = stringValue.intArray(separatedBy: ",")
-        self.x = vals[0]
-        self.y = vals[1]
+    /// Initialize a point using (row, column) as the coordinate pair.
+    /// This is most useful in conjunction with the `Grid` class.
+    public init(row: Int, column: Int) {
+        self.y = row
+        self.x = column
     }
+
+    // MARK: - Protocol Conformances
 
     public static func ==(lhs: Point, rhs: Point) -> Bool {
         return lhs.x == rhs.x && lhs.y == rhs.y
@@ -50,6 +55,8 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
     public var description: String {
         return "\(x),\(y)"
     }
+
+    // MARK: - Adjacent Point Finding
 
     /// A representation of all 8 possible directions from a given point.
     public enum Direction: CaseIterable {
