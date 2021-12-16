@@ -29,7 +29,7 @@ class Packet {
 
     enum `Type`: Int {
         case literal = 4
-        
+
         case sum = 0
         case product = 1
         case minimum = 2
@@ -177,8 +177,6 @@ class Packet {
 
     /// Returns the version sum of this packet and its subpackets.
     var versionSum: Int {
-        return self.version + self.subpackets.reduce(0, { partialResult, packet in
-            partialResult + packet.versionSum
-        })
+        return self.version + self.subpackets.reduce(0, { $0 + $1.versionSum })
     }
 }
