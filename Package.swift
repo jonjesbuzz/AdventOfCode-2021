@@ -60,6 +60,9 @@ let package = Package(
         .executableTarget(name: "Chiton", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "PacketDecoder", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),

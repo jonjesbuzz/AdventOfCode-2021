@@ -1,3 +1,5 @@
+import Foundation
+
 public extension String {
 
     /// Returns an array of strings separated by the separator.
@@ -33,5 +35,26 @@ public extension String {
             frequencyTable[char, default: 0] += 1
         }
         return frequencyTable
+    }
+}
+
+public extension String {
+
+    /// Converts a hexadecimal string to a binary string for easier manipulation.
+    var hexadecimalToBinaryString: String {
+        let arr = Array(self).map(String.init)
+        var s: [String] = []
+        for i in 0..<arr.count / 2 {
+            s.append(arr[2 * i] + arr[2 * i + 1])
+        }
+        let ints = s.map({ UInt8($0, radix: 16)! })
+        let result = ints.reduce("") { partialResult, num in
+            if num == 0 { return partialResult + "00000000" }
+            let str = String(num, radix: 2)
+            let zero = String(repeating: "0", count: num.leadingZeroBitCount)
+            return partialResult.appending(zero + str)
+        }
+        assert(result.count == self.count * 4)
+        return result
     }
 }
