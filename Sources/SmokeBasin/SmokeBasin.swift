@@ -13,7 +13,7 @@ class SmokeBasin: Solution {
 
     func reset() {
         let rows = activeInput.stringArray()
-        let matrix = rows.map { $0.singleDigitIntArray() }
+        let matrix = rows.map { $0.singleDigitIntArray }
         self.basin = Grid(matrix: matrix)
     }
 

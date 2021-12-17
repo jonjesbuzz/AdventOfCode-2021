@@ -1,5 +1,6 @@
 import Foundation
 
+// MARK: - Parsing
 public extension String {
 
     /// Returns an array of strings separated by the separator.
@@ -24,10 +25,13 @@ public extension String {
     ///
     /// For example, `12345` becomes `[1, 2, 3, 4, 5]`.
     /// If any character in the string is a non-numeric value, the function crashes with an unwrapping error.
-    func singleDigitIntArray() -> [Int] {
+    var singleDigitIntArray: [Int] {
         return Array(self).map { $0.wholeNumberValue! }
     }
+}
 
+// MARK: - Character Frequencies
+public extension String {
     /// Returns the frequency of each character in this string.
     var characterFrequencyTable: [Character: Int] {
         var frequencyTable: [Character: Int] = [:]
@@ -38,23 +42,31 @@ public extension String {
     }
 }
 
+// MARK: - Binary and Hex String Handling
 public extension String {
 
     /// Converts a hexadecimal string to a binary string for easier manipulation.
-    var hexadecimalToBinaryString: String {
-        let arr = Array(self).map(String.init)
-        var s: [String] = []
-        for i in 0..<arr.count / 2 {
-            s.append(arr[2 * i] + arr[2 * i + 1])
+    ///
+    /// This property will perform erratically or fail if the String contains non-hexadecimal characters.
+    var binaryStringFromHexString: String {
+
+        // Gather the bytes (which is 2 hex characters)
+        // Aside: Substring shares storage with the original string so it's fast and efficient to operate on.
+        var hexBytes: [Substring] = []
+        var index = self.startIndex
+        for _ in 0..<self.count / 2 {
+            let endIndex = self.index(index, offsetBy: 2)
+            hexBytes.append(self[index..<endIndex])
+            index = endIndex
         }
-        let ints = s.map({ UInt8($0, radix: 16)! })
-        let result = ints.reduce("") { partialResult, num in
-            if num == 0 { return partialResult + "00000000" }
-            let str = String(num, radix: 2)
-            let zero = String(repeating: "0", count: num.leadingZeroBitCount)
-            return partialResult.appending(zero + str)
-        }
+
+        let bytes = hexBytes.map { UInt8($0, radix: 16)!.binaryString(leftPadded: true) }
+        let result = bytes.joined(separator: "")
+
+        // Each hex character should have become 4 binary digits.
+        // If not, we've failed, and we need to assert and exit.
         assert(result.count == self.count * 4)
+
         return result
     }
 }

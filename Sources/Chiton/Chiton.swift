@@ -13,7 +13,7 @@ class Chiton: Solution {
     var grid: Grid<Int> = Grid(matrix: [])
 
     func reset() {
-        let matrix = activeInput.stringArray().map { $0.singleDigitIntArray() }
+        let matrix = activeInput.stringArray().map { $0.singleDigitIntArray }
         self.grid = Grid(matrix: matrix)
     }
 

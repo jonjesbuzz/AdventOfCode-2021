@@ -54,10 +54,9 @@ class Packet {
     /// - Parameter stringValue: A hexadecimal string representing the packet
     /// - Returns: The top level packet.
     static func packet(from stringValue: String) -> Packet {
-        let s = stringValue.hexadecimalToBinaryString
-        let a = Array(s)
-        var cursor = 0
-        return decodeNextPacket(a, cursor: &cursor)
+        let binaryString = stringValue.binaryStringFromHexString
+        var cursor = binaryString.startIndex
+        return decodeNextPacket(binaryString, cursor: &cursor)
     }
 
     /// Decodes the next packet in the series starting at the provided cursor.
@@ -65,33 +64,35 @@ class Packet {
     ///   - binaryString: The array of binary digits
     ///   - cursor: The starting position of the packet
     /// - Returns: The next packet in the series.
-    static func decodeNextPacket(_ binaryString: [String.Element], cursor: inout Int) -> Packet {
-        let p = Packet()
+    static func decodeNextPacket(_ binaryString: String, cursor: inout String.Index) -> Packet {
+        let packet = Packet()
 
         // Version is the first 3 bits
-        let versionString = String(binaryString[cursor..<cursor + 3])
-        p.version = Int(versionString, radix: 2)!
-        cursor += 3
+        let versionWidth = binaryString.index(cursor, offsetBy: 3)
+        let versionString = String(binaryString[cursor..<versionWidth])
+        packet.version = Int(versionString, radix: 2)!
+        cursor = versionWidth
 
         // Type is the next 3 bits
-        let typeString = String(binaryString[cursor..<cursor + 3])
+        let typeWidth = binaryString.index(cursor, offsetBy: 3)
+        let typeString = String(binaryString[cursor..<typeWidth])
         let typeInt = Int(typeString, radix: 2)!
-        p.type = Type(rawValue: typeInt)!
-        cursor += 3
+        packet.type = Type(rawValue: typeInt)!
+        cursor = typeWidth
 
         // Then the packet's payload, which is either a literal
         // or an operator with a series of subpackets.
-        if p.type == .literal {
-            p.decodeLiteral(binaryString, cursor: &cursor)
+        if packet.type == .literal {
+            packet.decodeLiteral(binaryString, cursor: &cursor)
         } else {
-            p.decodeOperator(binaryString, cursor: &cursor)
+            packet.decodeOperator(binaryString, cursor: &cursor)
         }
 
-        return p
+        return packet
     }
 
     /// Decodes the literal embedded in this packet.
-    private func decodeLiteral(_ binaryString: [String.Element], cursor: inout Int) {
+    private func decodeLiteral(_ binaryString: String, cursor: inout String.Index) {
         var literal = 0
 
         // We start off by parsing the first nibble
@@ -103,45 +104,49 @@ class Packet {
             parse = (binaryString[cursor] == "1")
 
             // Move the cursor over the "next" marker
-            cursor += 1
+            cursor = binaryString.index(cursor, offsetBy: 1)
 
             // Bitshift the literal over to make room for this one.
             literal = literal << 4
 
             // Compute the new nibble and add it to the literal
-            let nibble = String(binaryString[cursor..<cursor + 4])
+            let nibbleWidth = binaryString.index(cursor, offsetBy: 4)
+            let nibble = String(binaryString[cursor..<nibbleWidth])
             literal |= Int(nibble, radix: 2)!
 
             // Move the cursor over.
-            cursor += 4
+            cursor = nibbleWidth
         }
         self.literal = literal
     }
 
-    private func decodeOperator(_ binaryString: [String.Element], cursor: inout Int) {
+    /// Decodes the operator in this packet.
+    private func decodeOperator(_ binaryString: String, cursor: inout String.Index) {
 
         // The first bit determines the way the length of the subpackets are represented
         let lengthType = binaryString[cursor]
-        cursor += 1
+        cursor = binaryString.index(cursor, offsetBy: 1)
 
         if lengthType == "0" {
             // Total length of subpackets is in number of bits
             // That number is the next 15 bits in the string
-            let lengthString = String(binaryString[cursor..<cursor + 15])
+            let lengthWidth = binaryString.index(cursor, offsetBy: 15)
+            let lengthString = String(binaryString[cursor..<lengthWidth])
             let length = Int(lengthString, radix: 2)!
-            cursor += 15
+            cursor = lengthWidth
 
             // Decode packets until we've consumed the number of bits specified.
-            let end = cursor + length
+            let end = binaryString.index(cursor, offsetBy: length)
             while cursor < end {
                 self.subpackets.append(Self.decodeNextPacket(binaryString, cursor: &cursor))
             }
         } else {
             // Total length of subpackets is represented by a count of packets
             // That count is the next 11 bits in the string
-            let countString = String(binaryString[cursor..<cursor + 11])
+            let countWidth = binaryString.index(cursor, offsetBy: 11)
+            let countString = String(binaryString[cursor..<countWidth])
             let count = Int(countString, radix: 2)!
-            cursor += 11
+            cursor = countWidth
 
             // Decode the next `count` packets.
             for _ in 0..<count {

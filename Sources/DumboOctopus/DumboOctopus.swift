@@ -13,7 +13,7 @@ class DumboOctopus: Solution {
     var grid = Grid(rows: 0, columns: 0, initialValue: 0)
 
     func reset() {
-        self.grid = Grid(matrix: activeInput.stringArray().map { $0.singleDigitIntArray() })
+        self.grid = Grid(matrix: activeInput.stringArray().map { $0.singleDigitIntArray })
     }
 
     func tick(grid: inout Grid<Int>) -> Grid<Bool> {
