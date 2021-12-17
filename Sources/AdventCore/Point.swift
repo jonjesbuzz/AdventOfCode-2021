@@ -119,4 +119,8 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         }
         return point
     }
+
+    public func containedWithin(xRange: ClosedRange<Int>, yRange: ClosedRange<Int>) -> Bool {
+        return xRange.contains(self.x) && yRange.contains(self.y)
+    }
 }

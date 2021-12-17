@@ -59,6 +59,9 @@ let package = Package(
         .executableTarget(name: "PacketDecoder", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "TrickShot", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),
