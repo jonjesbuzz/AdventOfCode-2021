@@ -62,6 +62,9 @@ let package = Package(
         .executableTarget(name: "TrickShot", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "Snailfish", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),
