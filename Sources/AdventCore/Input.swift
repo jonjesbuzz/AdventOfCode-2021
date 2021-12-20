@@ -2,7 +2,7 @@ import Foundation
 
 /// Input encapsulates the puzzle input.
 ///
-/// The test input and actual inputs are provided and used by the `Solution`
+/// The test input and actual inputs are provided and used by the ``Solution``
 /// protocol to test the test input, and to provide the answer for the actual puzzle input.
 ///
 /// This instance is immutable and read-only after it is constructed.

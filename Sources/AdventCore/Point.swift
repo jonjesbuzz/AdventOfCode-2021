@@ -1,4 +1,4 @@
-/// Represents a point in space, or on a `Grid`.
+/// Represents a point in two-dimensional space, or on a ``Grid``.
 ///
 /// This instance is immutable and read-only once it has been constructed.
 public struct Point: Equatable, CustomStringConvertible, Hashable {
@@ -23,24 +23,28 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         self.y = vals[1]
     }
 
+    /// Returns the point at (0, 0).
+    public static let zero = Point(x: 0, y: 0)
+
     // MARK: - Row-Column Representation
 
     /// The row represenation of this point.
     ///
-    /// Row is represented by the `y` value of the point.
+    /// Row is represented by the ``y`` value of the point.
     public var row: Int {
         return self.y
     }
 
     /// The column represenation of this point.
     ///
-    /// Column is represented by the `x` value of the point.
+    /// Column is represented by the ``x`` value of the point.
     public var column: Int {
         return self.x
     }
 
     /// Initialize a point using (row, column) as the coordinate pair.
-    /// This is most useful in conjunction with the `Grid` class.
+    ///
+    /// This is most useful in conjunction with the ``Grid`` class.
     public init(row: Int, column: Int) {
         self.y = row
         self.x = column
@@ -122,5 +126,11 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
 
     public func containedWithin(xRange: ClosedRange<Int>, yRange: ClosedRange<Int>) -> Bool {
         return xRange.contains(self.x) && yRange.contains(self.y)
+    }
+}
+
+extension Point: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        return "(\(x),\(y))"
     }
 }

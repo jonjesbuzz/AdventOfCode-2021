@@ -1,6 +1,6 @@
 /// A Grid is a wrapper around a two-dimensional matrix, with convenience methods to make computations easier.
 ///
-/// You can index the grid using either integers or Point instances as follows:
+/// You can index the grid using either integers or ``Point`` instances as follows:
 /// ```swift
 /// let grid = Grid(rows: 10, columns: 10, initialValue: 0)
 /// let point = Point(row: 6, column: 4)
@@ -45,7 +45,7 @@ public struct Grid<T>: CustomStringConvertible {
         return rows * columns
     }
 
-    /// Sets or returns the value at the specified Point.
+    /// Sets or returns the value at the specified ``Point``.
     public subscript(_ point: Point) -> T {
         get {
             return self.grid[point.y][point.x]
@@ -65,12 +65,12 @@ public struct Grid<T>: CustomStringConvertible {
         }
     }
 
-    /// The point representing the top-left corner of the grid.
+    /// The ``Point`` representing the top-left corner of the grid.
     public var startPoint: Point {
         return Point(row: 0, column: 0)
     }
 
-    /// The point representing the bottom-right corner of the grid.
+    /// The ``Point`` representing the bottom-right corner of the grid.
     public var endPoint: Point {
         return Point(row: self.rows - 1, column: self.columns - 1)
     }
@@ -124,5 +124,45 @@ public extension Grid where T: AdventCore.Numeric {
             }
         }
         return costGrid[destination]
+    }
+}
+
+// MARK: - Sub-Grid Functions
+extension Grid {
+
+    /// Generates a new Grid containing only the values contained within the subgrid bounded by the two points.
+    ///
+    /// - Warning: If `from` and `to` do not form the bounds of a grid, this method will assert.
+    /// - Parameters:
+    ///   - from: The point in the top-left corner to start the subgrid from.
+    ///   - to: The point in the bottom-right corner to end the subgrid.
+    /// - Returns: The subgrid bounded by the points.
+    func subgrid(from: Point, to: Point) -> Grid {
+        if from == .zero && (to.row == self.rows - 1 && to.column == self.columns - 1) {
+            return Grid(matrix: self.grid)
+        }
+        assert(to.row > from.row)
+        assert(to.row > from.row)
+
+        var submatrix: [[T]] = []
+        var r0 = 0
+        var c0 = 0
+        for r in from.row..<to.row {
+            submatrix.append([])
+            for c in from.column..<to.column {
+                submatrix[r0][c0] = self[r, c]
+                c0 += 1
+            }
+            r0 += 1
+        }
+
+        return Grid(matrix: submatrix)
+    }
+
+    /// Returns the subgrid bounded by the two points.
+    ///
+    /// This is the same as calling ``subgrid(from:to:)``.
+    subscript(from from: Point, to to: Point) -> Grid {
+        return self.subgrid(from: from, to: to)
     }
 }

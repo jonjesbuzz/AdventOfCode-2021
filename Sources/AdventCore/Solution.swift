@@ -13,7 +13,7 @@ public protocol Solution : AnyObject {
 
     /// The actual input being operated on.
     ///
-    /// When this value is set, `reset()` MUST be called to rebuild any data structures held by the Solution instance.
+    /// When this value is set, ``reset()`` MUST be called to rebuild any data structures held by the Solution instance.
     var activeInput: InputType { get set }
 
     /// The answers to part 1 and part 2's test input.
@@ -21,7 +21,7 @@ public protocol Solution : AnyObject {
 
     /// This function should reset any data structures held by the instance.
     /// 
-    /// This method MUST be called if `activeInput` is changed during execution.
+    /// This method MUST be called if ``activeInput`` is changed during execution.
     func reset()
 
     /// The implementation of part 1.
@@ -35,7 +35,7 @@ public extension Solution {
 
     /// Executes part 1 and part 2 with the test input defined in the problem.
     ///
-    /// If the answer does not match what is given in `testAnswer`, an assertion is thrown to stop the program.
+    /// If the answer does not match what is given in ``testAnswer``, an assertion is thrown to stop the program.
     func runWithTestInput() {
         self.activeInput = inputs.test
 
