@@ -1,7 +1,7 @@
-/// Represents a point in two-dimensional space, or on a ``Grid``.
+/// Represents a point in two-dimensional space, or within a ``Grid``.
 ///
 /// This instance is immutable and read-only once it has been constructed.
-public struct Point: Equatable, CustomStringConvertible, Hashable {
+public struct Point {
 
     // MARK: - x,y Representation
     /// The x-coordinate of this point.
@@ -50,32 +50,30 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
         self.x = column
     }
 
-    // MARK: - Protocol Conformances
-
-    public static func ==(lhs: Point, rhs: Point) -> Bool {
-        return lhs.x == rhs.x && lhs.y == rhs.y
-    }
-
-    public var description: String {
-        return "\(x),\(y)"
-    }
-
     // MARK: - Adjacent Point Finding
 
     /// A representation of all 8 possible directions from a given point.
     public enum Direction: CaseIterable {
 
+        /// The point above the current point.
         case up
+        /// The point below the current point.
         case down
+        /// The point to the left of the current point.
         case left
+        /// The point to the right of the current point.
         case right
 
+        /// The point diagonally up and to the left of the current point.
         case upLeft
+        /// The point diagonally up and to the right of the current point.
         case upRight
+        /// The point diagonally down and to the left of the current point.
         case downLeft
+        /// The point diagonally down and to the right of the current point.
         case downRight
 
-        /// Returns only the directions that are non-diagonal directions.
+        /// The directions that are non-diagonal directions.
         public static let nonDiagonal: [Direction] = [.up, .down, .left, .right]
     }
 
@@ -117,15 +115,44 @@ public struct Point: Equatable, CustomStringConvertible, Hashable {
     /// - Returns: The adjacent point in the specified Grid, or `nil` if the point is out of bounds.
     public func adjacentPoint<T>(at direction: Direction, in grid: Grid<T>? = nil) -> Point? {
         let point = self.adjacentPoint(at: direction)
-        if let grid = grid {
-            if point.row < 0 || point.row >= grid.rows { return nil }
-            if point.column < 0 || point.column >= grid.columns { return nil }
+        if let grid = grid, !grid.contains(point: point) {
+            return nil
         }
         return point
     }
+}
 
-    public func containedWithin(xRange: ClosedRange<Int>, yRange: ClosedRange<Int>) -> Bool {
+// MARK: - Range Comparison
+public extension Point {
+    /// Determines if the pair of (x,y) ranges contains this point.
+    /// - Parameters:
+    ///   - xRange: A range of x-values.
+    ///   - yRange: A range of y-values.
+    /// - Returns: Whether this Point is contained within the provided ranges.
+    func containedWithin<T: RangeExpression>(xRange: T, yRange: T) -> Bool where T.Bound == Int {
         return xRange.contains(self.x) && yRange.contains(self.y)
+    }
+
+    /// Determines if the pair of (row, column) ranges contains this point.
+    /// - Parameters:
+    ///   - rowRange: A range of row values.
+    ///   - columnRange: A range of column values.
+    /// - Returns: Whether this Point is contained within the provided ranges.
+    func containedWithin<T: RangeExpression>(rowRange: T, columnRange: T) -> Bool where T.Bound == Int {
+        return rowRange.contains(self.row) && columnRange.contains(self.column)
+    }
+}
+
+// MARK: - Protocol Conformances
+extension Point: CustomStringConvertible {
+    public var description: String {
+        return "\(x),\(y)"
+    }
+}
+
+extension Point: Equatable, Hashable {
+    public static func ==(lhs: Point, rhs: Point) -> Bool {
+        return lhs.x == rhs.x && lhs.y == rhs.y
     }
 }
 

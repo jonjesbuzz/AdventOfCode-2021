@@ -96,6 +96,8 @@ public struct Heap<Element> {
 }
 
 public extension Heap where Element: Comparable {
+
+    /// For Elements that conform to `Comparable`, the heap can use the default implementation.
     enum HeapType {
         /// Have the heap perform like a minimum heap, where the smallest values are returned first.
         case minHeap

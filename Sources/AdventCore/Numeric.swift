@@ -1,7 +1,7 @@
 import Foundation
 
 /// This module's Numeric type defines additional requirements
-/// on top of Swift's numeric type. This allows certain APIs to accept various numeric types, if necessary.
+/// on top of Swift's ``Swift.Numeric`` type. This allows certain APIs to accept various numeric types, if necessary.
 public protocol Numeric: Comparable, Swift.Numeric {
     /// The maximum value described by this numeric type.
     static var max: Self { get }

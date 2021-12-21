@@ -34,7 +34,7 @@ class DumboOctopus: Solution {
                         didFlash[point] = true
 
                         for direction in Point.Direction.allCases {
-                            if let adjacent = point.adjacentPoint(at: direction, in: self.grid) {
+                            if let adjacent = point.adjacentPoint(at: direction, in: grid) {
                                 grid[adjacent] += 1
                             }
                         }

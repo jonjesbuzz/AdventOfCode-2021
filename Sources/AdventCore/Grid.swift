@@ -1,12 +1,4 @@
 /// A Grid is a wrapper around a two-dimensional matrix, with convenience methods to make computations easier.
-///
-/// You can index the grid using either integers or ``Point`` instances as follows:
-/// ```swift
-/// let grid = Grid(rows: 10, columns: 10, initialValue: 0)
-/// let point = Point(row: 6, column: 4)
-/// grid[3,1] = 3 // That is, grid[row, column]
-/// grid[point] = 24
-/// ```
 public struct Grid<T>: CustomStringConvertible {
 
     /// The underlying two-dimensional array of the grid.
@@ -23,8 +15,11 @@ public struct Grid<T>: CustomStringConvertible {
     }
 
     /// Initialize the grid with a prepopulated matrix.
+    ///
+    /// - Warning: If all rows of the matrix are not of the same length, this initializer will assert.
     /// - Parameter matrix: The prepopulated matrix of values for this grid.
     public init(matrix: [[T]]) {
+        assert(Set(matrix.map(\.count)).count == 1)
         self.grid = matrix
     }
 
@@ -88,8 +83,25 @@ public struct Grid<T>: CustomStringConvertible {
     }
 }
 
-// MARK: - Numeric-specific Extensions
+public extension Grid {
 
+    /// Determines if the point represents a valid cell in this grid.
+    /// - Parameter point: The point to check in this grid.
+    /// - Returns: `true` if the point lies within this grid, `false` otherwise.
+    func contains(point: Point) -> Bool {
+        return point.containedWithin(rowRange: 0..<rows, columnRange: 0..<columns)
+    }
+
+    /// Determines if the point at (row, column) represents a valid cell in this grid.
+    /// - Parameter row: The row to check in this grid.
+    /// - Parameter column: The column to check in this grid.
+    /// - Returns: `true` if the point lies within this grid, `false` otherwise.
+    func contains(row: Int, column: Int) -> Bool {
+        return (0..<rows).contains(row) && (0..<columns).contains(column)
+    }
+}
+
+// MARK: - Numeric-Specific Extensions
 public extension Grid where T: AdventCore.Numeric {
 
     /// Returns the minimum path cost from a start point to a destination.
@@ -128,7 +140,7 @@ public extension Grid where T: AdventCore.Numeric {
 }
 
 // MARK: - Sub-Grid Functions
-extension Grid {
+public extension Grid {
 
     /// Generates a new Grid containing only the values contained within the subgrid bounded by the two points.
     ///
