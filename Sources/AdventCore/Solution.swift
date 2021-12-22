@@ -20,8 +20,9 @@ public protocol Solution : AnyObject {
     var testAnswer: Answer<AnswerType> { get }
 
     /// This function should reset any data structures held by the instance.
-    /// 
-    /// This method MUST be called if ``activeInput`` is changed during execution.
+    ///
+    /// Generally, you should create any structures held by your solution as a function of the ``activeInput``.
+    /// > Important: This method **must** be called if ``activeInput`` is changed during execution.
     func reset()
 
     /// The implementation of part 1.

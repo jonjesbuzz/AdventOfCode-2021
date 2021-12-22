@@ -1,7 +1,9 @@
 import Foundation
 
-/// This module's Numeric type defines additional requirements
-/// on top of Swift's ``Swift.Numeric`` type. This allows certain APIs to accept various numeric types, if necessary.
+/// This module's Numeric type defines additional requirements on top of Swift's `Numeric` type.
+/// This allows certain APIs to accept various numeric types, if necessary.
+///
+/// AdventCore conforms `Int` and `Double` to this type.
 public protocol Numeric: Comparable, Swift.Numeric {
     /// The maximum value described by this numeric type.
     static var max: Self { get }
