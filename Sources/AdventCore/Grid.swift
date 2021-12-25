@@ -112,8 +112,9 @@ public extension Grid where T: AdventCore.Numeric {
     /// - Parameters:
     ///   - start: The starting point of the search. This node will have a cost of 0.
     ///   - destination: The destination of this search.
+    ///   - directions: The directions to search in
     /// - Returns: The minimum cost to reach `destination` from `start`.
-    func minCost(from start: Point, to destination: Point) -> T {
+    func minCost(from start: Point, to destination: Point, directions: [Point.Direction] = Point.Direction.nonDiagonal) -> T {
         var costGrid = Grid(rows: self.rows, columns: self.columns, initialValue: T.max)
         costGrid[start] = .zero
         var pq = Heap<(Point, T)>(comparator: { $0.1 < $1.1 })
@@ -123,7 +124,7 @@ public extension Grid where T: AdventCore.Numeric {
             let tuple = pq.remove()
             let current = tuple.0
             let currentCost = costGrid[current]
-            for direction in Point.Direction.nonDiagonal {
+            for direction in directions {
                 guard let point = current.adjacentPoint(at: direction, in: self) else { continue }
                 let pointCost = costGrid[point]
                 if pointCost > currentCost + self[point] {

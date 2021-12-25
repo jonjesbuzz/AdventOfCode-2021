@@ -120,6 +120,14 @@ public struct Point {
         }
         return point
     }
+
+    public func adjacentPoint<T>(at direction: Direction, in grid: SparseGrid<T>? = nil) -> Point? {
+        let point = self.adjacentPoint(at: direction)
+        if let grid = grid, !grid.contains(point: point) {
+            return nil
+        }
+        return point
+    }
 }
 
 // MARK: - Range Comparison
@@ -147,6 +155,10 @@ public extension Point {
 extension Point: CustomStringConvertible {
     public var description: String {
         return "\(x),\(y)"
+    }
+
+    public var rowDescription: String {
+        return "\(row),\(column)"
     }
 }
 

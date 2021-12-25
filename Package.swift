@@ -77,6 +77,15 @@ let package = Package(
         .executableTarget(name: "ReactorReboot", dependencies: [
             .target(name: "AdventCore")
         ]),
+        .executableTarget(name: "Amphipod", dependencies: [
+            .target(name: "AdventCore")
+        ]),
+        .executableTarget(name: "ArithmeticLogicUnit", dependencies: [
+            .target(name: "AdventCore")
+        ]),
+        .executableTarget(name: "SeaCucumber", dependencies: [
+            .target(name: "AdventCore")
+        ]),
         .testTarget(
             name: "AdventOfCodeTests",
             dependencies: ["AdventCore"]),
