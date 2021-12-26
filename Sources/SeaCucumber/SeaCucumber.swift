@@ -9,15 +9,13 @@ class SeaCucumber: Solution {
     var activeInput = ""
 
     var testAnswer = Answer(part1: 58, part2: 0)
-    var grid: [Point: Cucumber] = [:]
-    var maxBound: Point = .zero
+    var grid = SparseGrid<Cucumber>(rows: 0, columns: 0)
 
     func reset() {
-        grid = [:]
         let lines = activeInput.stringArray()
         let rows = lines.count
         let columns = lines[0].count
-        maxBound = .init(row: rows, column: columns)
+        self.grid = SparseGrid(rows: rows, columns: columns)
         for (r, row) in lines.enumerated() {
             for (c, value) in row.enumerated() {
                 if value == "." { continue }
@@ -25,8 +23,7 @@ class SeaCucumber: Solution {
                 grid[point] = Cucumber(point: point, herdValue: value)
             }
         }
-//        print("Initial Grid, bounds", maxBound.rowDescription)
-//        printGrid()
+        print(grid)
     }
 
     func step() -> Bool {
@@ -35,8 +32,8 @@ class SeaCucumber: Solution {
         var grid = self.grid
         // East-facing
         print("East")
-        for row in 0..<maxBound.row {
-            for column in 0..<maxBound.column {
+        for row in 0..<grid.rows {
+            for column in 0..<grid.columns {
                 let point = Point(row: row, column: column)
                 if let cucumber = grid[point], cucumber.herd == .east, cucumber.point == point {
                     didMove = doMove(point: point, cucumber: cucumber, in: &grid) || didMove
@@ -49,8 +46,8 @@ class SeaCucumber: Solution {
 
         // South-facing
         print("South")
-        for row in 0..<maxBound.row {
-            for column in 0..<maxBound.column {
+        for row in 0..<grid.rows {
+            for column in 0..<grid.columns {
                 let point = Point(row: row, column: column)
                 if let cucumber = grid[point], cucumber.herd == .south, cucumber.point == point {
                     didMove = doMove(point: point, cucumber: cucumber, in: &grid) || didMove
@@ -64,24 +61,24 @@ class SeaCucumber: Solution {
     }
 
     private func fixPoints() {
-        for (point, cucumber) in grid {
+        for (point, cucumber) in grid.grid {
             cucumber.point = point
         }
     }
 
-    private func doMove(point: Point, cucumber: Cucumber, in grid: inout [Point: Cucumber]) -> Bool {
+    private func doMove(point: Point, cucumber: Cucumber, in grid: inout SparseGrid<Cucumber>) -> Bool {
         var didMove = false
         var adjacentPoint = point.adjacentPoint(at: cucumber.herd.direction)
 
-        if adjacentPoint.column >= maxBound.column && cucumber.herd == .east {
+        if adjacentPoint.column >= grid.columns && cucumber.herd == .east {
             adjacentPoint = Point(row: adjacentPoint.row, column: 0)
-        } else if adjacentPoint.row >= maxBound.row && cucumber.herd == .south {
+        } else if adjacentPoint.row >= grid.rows && cucumber.herd == .south {
             adjacentPoint = Point(row: 0, column: adjacentPoint.column)
         }
 
         if self.grid[adjacentPoint] == nil {
 //            print("\tMoving \(point.rowDescription) to \(adjacentPoint.rowDescription)")
-            grid.removeValue(forKey: point)
+            grid[point] = nil
             grid[adjacentPoint] = cucumber
             didMove = true
         }
@@ -107,14 +104,7 @@ class SeaCucumber: Solution {
     }
 
     func printGrid() {
-        for row in 0..<maxBound.row {
-            for column in 0..<maxBound.column {
-                let point = Point(row: row, column: column)
-                if let cucumber = grid[point] { print(cucumber.description, terminator: "") }
-                else { print(".", terminator: "") }
-            }
-            print()
-        }
+        print(grid)
     }
 }
 

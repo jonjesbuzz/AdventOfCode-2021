@@ -75,7 +75,7 @@ enum Fold {
     }
 }
 
-extension Grid where T == Bool {
+extension Grid where Element == Bool {
     var origamiRepresentation: String {
         var rep = ""
         for r in self.grid {

@@ -1,15 +1,15 @@
 /// A Grid is a wrapper around a two-dimensional matrix, with convenience methods to make computations easier.
-public struct Grid<T>: CustomStringConvertible {
+public struct Grid<Element>: CustomStringConvertible {
 
     /// The underlying two-dimensional array of the grid.
-    private(set) public var grid: [[T]]
+    private(set) public var grid: [[Element]]
 
     /// Creates a Grid of `rows` × `columns` filled with the `initialValue` in all positions.
     /// - Parameters:
     ///   - rows: The number of rows in the grid.
     ///   - columns: The number of columns in the grid.
     ///   - initialValue: The initial value to fill in all of the positions.
-    public init(rows: Int, columns: Int, initialValue: T) {
+    public init(rows: Int, columns: Int, initialValue: Element) {
         guard rows > 0 else { self.grid = []; return }
         self.grid = Array(repeating: Array(repeating: initialValue, count: columns), count: rows)
     }
@@ -18,7 +18,7 @@ public struct Grid<T>: CustomStringConvertible {
     ///
     /// - Warning: If all rows of the matrix are not of the same length, this initializer will assert.
     /// - Parameter matrix: The prepopulated matrix of values for this grid.
-    public init(matrix: [[T]]) {
+    public init(matrix: [[Element]]) {
         assert(Set(matrix.map(\.count)).count == 1)
         self.grid = matrix
     }
@@ -33,6 +33,16 @@ public struct Grid<T>: CustomStringConvertible {
         return self.grid.count > 0 ? self.grid[0].count : 0
     }
 
+    /// The valid range of values for row indices.
+    public var rowRange: ClosedRange<Int> {
+        return 0...(rows - 1)
+    }
+
+    /// The valid range of values for column indices.
+    public var columnRange: ClosedRange<Int> {
+        return 0...(columns - 1)
+    }
+
     /// The number of values in the Grid.
     ///
     /// This is the product of `rows` and `columns`.
@@ -41,7 +51,7 @@ public struct Grid<T>: CustomStringConvertible {
     }
 
     /// Sets or returns the value at the specified ``Point``.
-    public subscript(_ point: Point) -> T {
+    public subscript(_ point: Point) -> Element {
         get {
             return self.grid[point.y][point.x]
         }
@@ -51,7 +61,7 @@ public struct Grid<T>: CustomStringConvertible {
     }
 
     /// Sets or returns the value at the specified row and column.
-    public subscript(row: Int, col: Int) -> T {
+    public subscript(row: Int, col: Int) -> Element {
         get {
             return self.grid[row][col]
         }
@@ -74,7 +84,7 @@ public struct Grid<T>: CustomStringConvertible {
     ///
     /// This is useful for performing iteration over all values in the grid, and for
     /// functional operations such as `map`, `filter`, and `reduce`.
-    public var flattened: [T] {
+    public var flattened: [Element] {
         return self.grid.flatMap { $0 }
     }
 
@@ -102,7 +112,7 @@ public extension Grid {
 }
 
 // MARK: - Numeric-Specific Extensions
-public extension Grid where T: AdventCore.Numeric {
+public extension Grid where Element: AdventCore.Numeric {
 
     /// Returns the minimum path cost from a start point to a destination.
     ///
@@ -114,10 +124,10 @@ public extension Grid where T: AdventCore.Numeric {
     ///   - destination: The destination of this search.
     ///   - directions: The directions to search in
     /// - Returns: The minimum cost to reach `destination` from `start`.
-    func minCost(from start: Point, to destination: Point, directions: [Point.Direction] = Point.Direction.nonDiagonal) -> T {
-        var costGrid = Grid(rows: self.rows, columns: self.columns, initialValue: T.max)
+    func minCost(from start: Point, to destination: Point, directions: [Point.Direction] = Point.Direction.nonDiagonal) -> Element {
+        var costGrid = Grid(rows: self.rows, columns: self.columns, initialValue: Element.max)
         costGrid[start] = .zero
-        var pq = Heap<(Point, T)>(comparator: { $0.1 < $1.1 })
+        var pq = Heap<(Point, Element)>(comparator: { $0.1 < $1.1 })
         pq.insert((start, .zero))
 
         while !pq.isEmpty {
@@ -157,7 +167,7 @@ public extension Grid {
         assert(to.row > from.row)
         assert(to.row > from.row)
 
-        var submatrix: [[T]] = []
+        var submatrix: [[Element]] = []
         var r0 = 0
         var c0 = 0
         for r in from.row..<to.row {
@@ -179,3 +189,5 @@ public extension Grid {
         return self.subgrid(from: from, to: to)
     }
 }
+
+extension Grid: GridProtocol {}

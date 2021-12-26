@@ -10,7 +10,6 @@ In addition, it includes a variety of reusable data structures and algorithms th
 ## Topics
 
 ### Solution Handling
-
 - ``Solution``
 - ``Input``
 - ``Answer``
@@ -18,8 +17,11 @@ In addition, it includes a variety of reusable data structures and algorithms th
 ### Data Structures
 - ``Point``
 - ``Line``
-- ``Grid``
 - ``Heap``
+- ``Grid``
+- ``SparseGrid``
+- ``InfiniteGrid``
 
 ### Protocols
 - ``Numeric``
+- ``GridProtocol``

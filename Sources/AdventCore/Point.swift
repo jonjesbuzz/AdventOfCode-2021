@@ -113,21 +113,21 @@ public struct Point {
     ///   - direction: The direction to generate a point in.
     ///   - grid: The Grid to use for checking if the point exists in that grid.
     /// - Returns: The adjacent point in the specified Grid, or `nil` if the point is out of bounds.
-    public func adjacentPoint<T>(at direction: Direction, in grid: Grid<T>? = nil) -> Point? {
+    public func adjacentPoint(at direction: Direction, in grid: GridProtocol) -> Point? {
         let point = self.adjacentPoint(at: direction)
-        if let grid = grid, !grid.contains(point: point) {
+        if !grid.contains(point: point) {
             return nil
         }
         return point
     }
 
-    public func adjacentPoint<T>(at direction: Direction, in grid: SparseGrid<T>? = nil) -> Point? {
-        let point = self.adjacentPoint(at: direction)
-        if let grid = grid, !grid.contains(point: point) {
-            return nil
-        }
-        return point
-    }
+//    public func adjacentPoint<T>(at direction: Direction, in grid: SparseGrid<T>? = nil) -> Point? {
+//        let point = self.adjacentPoint(at: direction)
+//        if let grid = grid, !grid.contains(point: point) {
+//            return nil
+//        }
+//        return point
+//    }
 }
 
 // MARK: - Range Comparison
@@ -153,10 +153,12 @@ public extension Point {
 
 // MARK: - Protocol Conformances
 extension Point: CustomStringConvertible {
+    /// Represents the point as a x-y pair.
     public var description: String {
         return "\(x),\(y)"
     }
 
+    /// Represents the point as a row-column pair.
     public var rowDescription: String {
         return "\(row),\(column)"
     }

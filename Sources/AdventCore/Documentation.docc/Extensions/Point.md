@@ -40,6 +40,7 @@ let right = pointB.adjacentPoint(at: .downRight, in: grid)
 ### String Representation
 - ``init(stringValue:)``
 - ``description``
+- ``rowDescription``
 
 ### Finding Adjacent Points
 - ``Direction``

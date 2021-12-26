@@ -23,7 +23,7 @@ You can index the grid using either integers or ``Point`` instances, as shown be
 
 ```swift
 let point = Point(row: 6, column: 4)
-grid[3,1] = 3 // That is, grid[row, column]
+grid[3, 1] = 3 // That is, grid[row, column]
 grid[point] = 24
 ```
 
@@ -42,6 +42,8 @@ grid[point] = 24
 - ``count``
 - ``rows``
 - ``columns``
+- ``rowRange``
+- ``columnRange``
 - ``startPoint``
 - ``endPoint``
 - ``contains(point:)``
@@ -52,7 +54,7 @@ grid[point] = 24
 - ``flattened``
 
 ### Operations
-- ``minCost(from:to:)``
+- ``minCost(from:to:directions:)``
 - ``subgrid(from:to:)``
 - ``subscript(from:to:)``
 
