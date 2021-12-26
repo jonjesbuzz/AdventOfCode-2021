@@ -51,6 +51,10 @@ public extension Solution {
         let ans2 = part2()
         print("[Test] Part 2 answer: \(ans2); expected \(testAnswer.part2)")
         assert(ans2 == testAnswer.part2, "Part 2 does not match, expected \(testAnswer.part2), but got \(ans2)")
+
+        print("""
+              [Test] Part 1: \(ans1), Part 2: \(ans2)
+              """)
     }
 
 
@@ -68,5 +72,9 @@ public extension Solution {
 
         let ans2 = part2()
         print("[Actual] Part 2 answer: \(ans2)")
+
+        print("""
+              [Actual] Part 1: \(ans1), Part 2: \(ans2)
+              """)
     }
 }

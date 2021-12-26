@@ -1,4 +1,4 @@
 let solution = Amphipod()
 
-solution.runWithTestInput()
+//solution.runWithTestInput()
 solution.runWithActualInput()
